@@ -40,7 +40,12 @@ def create_contacts_table():
                     description TEXT
                   );'''
                   )
-    
+
+def get_all_contacts():
+    return execute_query("SELECT * FROM contacts;", fetch="all")
+
+def get_contact_by_id(contact_id):
+    return execute_query("SELECT * FROM contacts WHERE id = %s;", (contact_id,), fetch="one")
 
 if __name__ == "__main__":
-    create_contacts_table()
+    print(get_contact_by_id(1))
