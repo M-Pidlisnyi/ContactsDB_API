@@ -6,7 +6,7 @@ DB_NAME = "ContactsDB"
 DB_USER = "postgres"
 DB_PASSWORD = "postgres"
 
-def execute_query(query, params:tuple=(), fetch="none"):
+def execute_query(query, params:tuple=(), fetch="none") -> list[tuple]|tuple|None:
     '''
     fetch can be:
         - "one"  → returns cursor.fetchone()
@@ -44,8 +44,8 @@ def create_contacts_table():
 def get_all_contacts():
     return execute_query("SELECT * FROM contacts;", fetch="all")
 
-def get_contact_by_id(contact_id):
-    return execute_query("SELECT * FROM contacts WHERE id = %s;", (contact_id,), fetch="one")
+def get_contact_by_id(contact_id) -> tuple|None:
+    return execute_query("SELECT * FROM contacts WHERE id = %s;", (contact_id,), fetch="one") # pyright: ignore[reportReturnType]
 
 if __name__ == "__main__":
     print(get_contact_by_id(1))
