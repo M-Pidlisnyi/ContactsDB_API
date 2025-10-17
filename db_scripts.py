@@ -47,5 +47,15 @@ def get_all_contacts():
 def get_contact_by_id(contact_id) -> tuple|None:
     return execute_query("SELECT * FROM contacts WHERE id = %s;", (contact_id,), fetch="one") # pyright: ignore[reportReturnType]
 
+def create_contact(first_name: str, last_name: str, email: str, description: str):
+    execute_query(
+        "INSERT INTO contacts (first_name, last_name, email, description) VALUES (%s, %s, %s, %s);",
+        (first_name, last_name, email, description)
+    )
+    new_contact = execute_query("SELECT * FROM contacts WHERE email = %s;", (email,), fetch="one")
+    if new_contact:
+        return new_contact[0]  # Return the id of the newly created contact
+    return None
+
 if __name__ == "__main__":
     print(get_contact_by_id(1))
