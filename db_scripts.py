@@ -57,5 +57,12 @@ def create_contact(first_name: str, last_name: str, email: str, description: str
         return new_contact[0]  # Return the id of the newly created contact
     return None
 
+def full_text_search(search_query: str) -> list[tuple]:
+    return execute_query('''
+                            SELECT * FROM contacts
+                            WHERE to_tsvector(first_name || ' ' || last_name || ' ' || email || ' ' || description) @@ plainto_tsquery(%s);
+                            ''', 
+                            (search_query,), fetch="all") # pyright: ignore[reportReturnType]
+
 if __name__ == "__main__":
     print(get_contact_by_id(1))

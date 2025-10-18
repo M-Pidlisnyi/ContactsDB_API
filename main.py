@@ -33,3 +33,7 @@ def create_contact(contact: Contact):
     new_contact_id =  db.create_contact(contact.first_name, contact.last_name, contact.email, contact.description)
     return {"message": "Contact created", "contact_id": new_contact_id}
     
+
+@app.get("/contacts/search/{search_query}")
+def search_contacts(search_query: str):
+    return db.full_text_search(search_query)
